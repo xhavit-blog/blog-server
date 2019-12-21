@@ -1,6 +1,6 @@
 const express = require("express");
 const ErrorBusiness = require("../lib/error/ErrorBusiness");
-const { dbConnect } = require("../db/client");
+const { dbConnect } = require("../lib/db/client");
 
 const router = express.Router();
 

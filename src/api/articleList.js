@@ -1,5 +1,5 @@
 const express = require("express");
-const { dbConnect } = require("../db/client");
+const { dbConnect } = require("../lib/db/client");
 
 const router = express.Router();
 
