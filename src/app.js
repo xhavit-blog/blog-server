@@ -1,14 +1,14 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
+const createError = require("http-errors");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const express = require("./lib/express");
 
-var indexRouter = require("./route/index");
-var usersRouter = require("./route/users");
-var apiRouter = require("./api");
+const indexRouter = require("./route/index");
+const usersRouter = require("./route/users");
+const apiRouter = require("./api");
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set("views", path.join(__dirname, "view"));
@@ -31,13 +31,24 @@ app.use(function(req, res, next) {
 
 // error handler
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  const isDev = req.app.get("env") === "development";
+  const rApi = /^\/api\//;
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render("error");
+  // api的错误以json格式返回
+  if (rApi.test(req.originalUrl)) {
+    res.status(err.status || 500);
+    res.xJsonErr(err);
+  }
+  // 页面的错误以html的格式返回
+  else {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = isDev ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render("error");
+  }
 });
 
 module.exports = app;
