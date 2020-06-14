@@ -4,7 +4,7 @@ const { dbConnect } = require("../lib/db/client");
 
 const router = express.Router();
 
-router.post("/", async function(req, res, next) {
+router.post("/article/add", async function (req, res, next) {
   let { title, content } = req.body;
 
   title = title.trim();
@@ -22,15 +22,16 @@ router.post("/", async function(req, res, next) {
 
   const db = await dbConnect;
   const now = new Date();
-
-  await db.collection("article").insertOne({
+  const data = {
     title,
     content,
     createTime: now,
-    updateTime: now
-  });
+    updateTime: now,
+  };
 
-  res.xJson({ title, content });
+  await db.collection("article").insertOne(data);
+
+  res.xJson({ id: data._id });
 });
 
 module.exports = router;

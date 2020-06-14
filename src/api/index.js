@@ -1,14 +1,18 @@
 const express = require("express");
-const articleCreate = require("./articleCreate");
-const articleList = require("./articleList"); 
-const articleDetail = require("./articleDetail"); 
-const articleTest = require("./test"); 
+const articleAdd = require("./articleAdd");
+const articleList = require("./articleList");
+const articleDetail = require("./articleDetail");
+const articleRemove = require("./articleRemove");
+const articleUpdate = require("./articleUpdate");
+const articleTest = require("./test");
 
 const router = express.Router();
 
-router.use("/article/create", articleCreate);
-router.use("/article/list", articleList);
-router.use("/article/detail", articleDetail);
-router.use("/article/test", articleTest);
+router.use(articleAdd);
+router.use(articleList);
+router.use(articleDetail);
+router.use(articleRemove);
+router.use(articleUpdate);
+router.use(articleTest);
 
 module.exports = router;

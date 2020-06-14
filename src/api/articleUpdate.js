@@ -4,14 +4,16 @@ const { dbConnect } = require("../lib/db/client");
 
 const router = express.Router();
 
-router.get("/article/detail/:id", async function (req, res, next) {
+router.post("/article/update/:id", async function (req, res, next) {
   const { id } = req.params;
+  const { title, content } = req.body;
   const db = await dbConnect;
-  const data = await db
-    .collection("article")
-    .findOne({ _id: new ObjectId(id) });
 
-  res.xJson(data);
+  await db
+    .collection("article")
+    .updateOne({ _id: new ObjectId(id) }, { $set: { title, content } });
+
+  res.xJson();
 });
 
 module.exports = router;
